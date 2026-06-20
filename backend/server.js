@@ -42,3 +42,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`Server is running smoothly on port ${PORT}`);
 });
+// Ensure this line is present at the very bottom of backend/server.js
+module.exports = app;
