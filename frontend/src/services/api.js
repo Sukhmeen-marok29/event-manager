@@ -1,16 +1,11 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  // Force it to use the live environment variable if it exists
+  baseURL: import.meta.env.VITE_API_URL, 
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
-export const getEvents = () => API.get('/events');
-export const getEventById = (id) => API.get(`/events/${id}`);
-export const createEvent = (eventData) => API.post('/events', eventData);
-export const updateEvent = (id, eventData) => API.put(`/events/${id}`, eventData);
-export const deleteEvent = (id) => API.delete(`/events/${id}`);
 
 export default API;
