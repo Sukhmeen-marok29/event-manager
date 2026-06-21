@@ -1,11 +1,14 @@
-import axios from 'axios';
-
-const API = axios.create({
-  // Force it to use the live environment variable if it exists
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-export default API;
+// Make sure "export" is right here!
+export const createEvent = async (eventData) => {
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  
+  const response = await fetch(`${API_URL}/api/events`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(eventData),
+  });
+  
+  return response.json();
+};
