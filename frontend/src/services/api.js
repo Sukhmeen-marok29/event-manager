@@ -1,8 +1,6 @@
-// Get the API URL from your environment variables (Vite uses import.meta.env)
-// Fallback to localhost:5000 if the environment variable isn't set yet
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// 1. Get all events (Exported as BOTH getEvents and fetchEvents to prevent syntax crashes)
+// 1. Get all events
 export const getEvents = async () => {
   try {
     const response = await fetch(`${API_URL}/api/events`);
@@ -13,7 +11,9 @@ export const getEvents = async () => {
     throw error;
   }
 };
-export const fetchEvents = getEvents; 
+
+// Alternate alias support for App.jsx
+export const fetchEvents = getEvents;
 
 // 2. Create a new event
 export const createEvent = async (eventData) => {
@@ -33,7 +33,25 @@ export const createEvent = async (eventData) => {
   }
 };
 
-// 3. Delete an event
+// 3. Update an event
+export const updateEvent = async (eventId, updatedData) => {
+  try {
+    const response = await fetch(`${API_URL}/api/events/${eventId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedData),
+    });
+    if (!response.ok) throw new Error('Failed to update event');
+    return await response.json();
+  } catch (error) {
+    console.error("Error in updateEvent:", error);
+    throw error;
+  }
+};
+
+// 4. Delete an event
 export const deleteEvent = async (eventId) => {
   try {
     const response = await fetch(`${API_URL}/api/events/${eventId}`, {
