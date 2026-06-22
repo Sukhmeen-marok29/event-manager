@@ -15,12 +15,19 @@ const allowedOrigins = [
 ];
 
 // Middleware
+// Middleware
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps, Postman, or server-to-server)
+        // 1. Allow requests with no origin (like mobile apps, Postman, or server-to-server)
         if (!origin) return callback(null, true);
         
-        if (allowedOrigins.indexOf(origin) !== -1 || process.env.FRONTEND_URL === '*') {
+        // 2. Allow any local development port (e.g., localhost:5173, localhost:5174, etc.)
+        const isLocalhost = /^http:\/\/localhost(:\d+)?$/.test(origin);
+        
+        // 3. Your production Vercel frontend URL
+        const productionUrl = 'https://event-manager-frontend-kappa.vercel.app';
+
+        if (isLocalhost || origin === productionUrl || process.env.FRONTEND_URL === '*') {
             return callback(null, true);
         } else {
             const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
@@ -31,7 +38,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
-
 app.use(express.json());
 
 // Database Connection
