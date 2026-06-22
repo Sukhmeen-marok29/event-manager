@@ -2,7 +2,7 @@
 // Fallback to localhost:5000 if the environment variable isn't set yet
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// 1. Get all events
+// 1. Get all events (Exported as BOTH getEvents and fetchEvents to prevent syntax crashes)
 export const getEvents = async () => {
   try {
     const response = await fetch(`${API_URL}/api/events`);
@@ -13,6 +13,7 @@ export const getEvents = async () => {
     throw error;
   }
 };
+export const fetchEvents = getEvents; 
 
 // 2. Create a new event
 export const createEvent = async (eventData) => {
